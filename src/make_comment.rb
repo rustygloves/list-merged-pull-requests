@@ -12,14 +12,14 @@ end
 
 args = ARGV.map(&:strip)
 repository = args[0]
-number = args[1]
+number = args[1].to_i  # Convert the number to integer
 token = args[2]
 message = args[3]
 
 if message.empty?
-  puts 'No merged pull requests'
-  exit 0
+  puts 'Error: Message cannot be empty'
+  exit 1
 end
 
 GITHUB = Octokit::Client.new(access_token: token)
-GITHUB.add_comment(repository, number, message)
+GITHUB.update_pull_request(repository, number, body: message)
